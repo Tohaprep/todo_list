@@ -7,12 +7,6 @@ const tasks1 = [
   { id: "2", title: "прес", isDone: true },
 ];
 
-const tasks2 = [
-  { id: "0", title: "монстры", isDone: true },
-  { id: "1", title: "тентасьон", isDone: false },
-  { id: "2", title: "кукиш", isDone: true },
-];
-
 function App() {
   return (
     <div className="App">
