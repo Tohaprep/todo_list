@@ -1,0 +1,30 @@
+.App {
+  padding: 50px;
+  display: flex;
+}
+
+.todo {
+  margin-right: 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 12vw;
+  min-width: 200px;
+  gap: 20px;
+  text-align: center;
+}
+
+.add_input {
+  display: flex;
+  flex-direction: column;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+.list_inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
