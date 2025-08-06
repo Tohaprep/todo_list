@@ -12,10 +12,18 @@ function App() {
     { id: v1(), title: "прес", isDone: true },
   ]);
 
+  console.log(tasks);
+
   const [filterValue, setFilterValue] = useState<filterValueType>("all");
   let filteredTasks = tasks;
 
   const filterTasks = (value: filterValueType) => setFilterValue(value);
+
+  const addTask = (value: string) => {
+    const newTask = { id: v1(), title: value, isDone: false };
+    setTasks([newTask, ...tasks]);
+  };
+
   const removeTask = (id: string) => {
     setTasks(tasks.filter((t) => t.id !== id));
   };
@@ -24,12 +32,17 @@ function App() {
     filteredTasks = tasks.filter((t) => t.isDone == false);
   }
 
+  if (filterValue === "completed") {
+    filteredTasks = tasks.filter((t) => t.isDone == true);
+  }
+
   return (
     <div className="App">
       <div className="todos">
         <TodoList
           title="что сделать"
           tasksArr={filteredTasks}
+          addTask={addTask}
           removeTask={removeTask}
           filterTasks={filterTasks}
         />

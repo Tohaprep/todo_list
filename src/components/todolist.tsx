@@ -6,6 +6,7 @@ type TasksProps = { id: string; title: string; isDone: boolean };
 type TaskListProps = {
   title: string;
   tasksArr: Array<TasksProps>;
+  addTask: (value: string) => void;
   removeTask: (id: string) => void;
   filterTasks: (value: filterValueType) => void;
 };
@@ -13,10 +14,13 @@ type TaskListProps = {
 export function TodoList({
   title,
   tasksArr,
+  addTask,
   removeTask,
   filterTasks,
 }: TaskListProps) {
   let [newTask, setNewTask] = useState("");
+
+  //REFACTOR: вынести все анонимные функции из событий в отдельные обычные функции, а в событиях оставить только ссылки на эти функции.
 
   return (
     <div className="todo">
@@ -30,7 +34,13 @@ export function TodoList({
             setNewTask(e.target.value);
           }}
         />
-        <button>Добавить</button>
+        <button
+          onClick={() => {
+            newTask == "" ? null : addTask(newTask);
+            setNewTask("");
+          }}>
+          +
+        </button>
       </div>
       <div className="todo_ul">
         <ul>
