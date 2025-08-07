@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { filterValueType } from "../App";
+import type { ChangeEvent } from "react";
 
 type TasksProps = { id: string; title: string; isDone: boolean };
 
@@ -18,9 +19,19 @@ export function TodoList({
   removeTask,
   filterTasks,
 }: TaskListProps) {
-  let [newTask, setNewTask] = useState("");
+  let [newTaskTitle, setNewTaskTitle] = useState("");
 
-  //REFACTOR: вынести все анонимные функции из событий в отдельные обычные функции, а в событиях оставить только ссылки на эти функции.
+  const addTitleTaskHandler = (e: ChangeEvent<HTMLInputElement>) =>
+    setNewTaskTitle(e.target.value);
+
+  const addTaskHandler = () => {
+    newTaskTitle == "" ? null : addTask(newTaskTitle);
+    setNewTaskTitle("");
+  };
+
+  const allFilterTaskHandler = () => filterTasks("all");
+  const activeFilterTaskHandler = () => filterTasks("active");
+  const completedFilterTaskHandler = () => filterTasks("completed");
 
   return (
     <div className="todo">
@@ -29,54 +40,30 @@ export function TodoList({
         <input
           className="todo_textarea"
           type="text"
-          value={newTask}
-          onChange={(e) => {
-            setNewTask(e.target.value);
-          }}
+          value={newTaskTitle}
+          onChange={addTitleTaskHandler}
         />
-        <button
-          onClick={() => {
-            newTask == "" ? null : addTask(newTask);
-            setNewTask("");
-          }}>
-          +
-        </button>
+        <button onClick={addTaskHandler}>+</button>
       </div>
       <div className="todo_ul">
         <ul>
-          {tasksArr.map((task) => (
-            <li className="todo_li" key={task.id}>
-              <input type="checkbox" checked={task.isDone}></input>
-              <span>{task.title}</span>
-              <button
-                onClick={() => {
-                  removeTask(task.id);
-                }}>
-                X
-              </button>
-            </li>
-          ))}
+          {tasksArr.map((task) => {
+            const removeTaskHandler = () => removeTask(task.id);
+
+            return (
+              <li className="todo_li" key={task.id}>
+                <input type="checkbox" checked={task.isDone}></input>
+                <span>{task.title}</span>
+                <button onClick={removeTaskHandler}>x</button>
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className="todo_buttons">
-        <button
-          onClick={() => {
-            filterTasks("all");
-          }}>
-          все
-        </button>
-        <button
-          onClick={() => {
-            filterTasks("active");
-          }}>
-          активные
-        </button>
-        <button
-          onClick={() => {
-            filterTasks("completed");
-          }}>
-          выполненные
-        </button>
+        <button onClick={allFilterTaskHandler}>все</button>
+        <button onClick={activeFilterTaskHandler}>активные</button>
+        <button onClick={completedFilterTaskHandler}>выполненные</button>
       </div>
     </div>
   );
