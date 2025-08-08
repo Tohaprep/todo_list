@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { filterValueType } from "../App";
 import type { ChangeEvent } from "react";
+import type { KeyboardEvent } from "react";
 
 export type TasksProps = { id: string; title: string; isDone: boolean };
 
@@ -10,7 +11,7 @@ type TaskListProps = {
   addTask: (value: string) => void;
   removeTask: (id: string) => void;
   filterTasks: (value: filterValueType) => void;
-  changeTaskStatus: (task: TasksProps, index: number, isDone: boolean) => void;
+  changeTaskStatus: (task: TasksProps, id: string, isDone: boolean) => void;
 };
 
 export function TodoList({
@@ -31,6 +32,13 @@ export function TodoList({
     setNewTaskTitle("");
   };
 
+  const inputEnterKeyDownTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.code == "Enter" && e.ctrlKey == true) {
+      newTaskTitle == "" ? null : addTask(newTaskTitle);
+      setNewTaskTitle("");
+    }
+  };
+
   const allFilterTaskHandler = () => filterTasks("all");
   const activeFilterTaskHandler = () => filterTasks("active");
   const completedFilterTaskHandler = () => filterTasks("completed");
@@ -44,6 +52,7 @@ export function TodoList({
           type="text"
           value={newTaskTitle}
           onChange={addTitleTaskHandler}
+          onKeyDown={inputEnterKeyDownTaskHandler}
         />
         <button onClick={addTaskHandler}>+</button>
       </div>
@@ -53,7 +62,7 @@ export function TodoList({
             const removeTaskHandler = () => removeTask(task.id);
 
             const changeTaskStatusHandler = () =>
-              changeTaskStatus(task, tasksArr.indexOf(task), task.isDone);
+              changeTaskStatus(task, task.id, !task.isDone);
 
             return (
               <li className="todo_li" key={task.id}>

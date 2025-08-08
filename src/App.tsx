@@ -15,8 +15,6 @@ function App() {
 
   console.log(tasks);
 
-  //REFACTOR: починить фильтрацию массива (баг с добавлением элементов из состояния);
-
   const [filterValue, setFilterValue] = useState<filterValueType>("all");
   let filteredTasks = tasks;
 
@@ -31,13 +29,10 @@ function App() {
     setTasks(tasks.filter((t) => t.id !== id));
   };
 
-  const changeTaskStatus = (
-    task: TasksProps,
-    index: number,
-    isDone: boolean
-  ) => {
-    task.isDone = !isDone;
-    setTasks([...tasks.slice(0, index), task, ...tasks.slice(index + 1)]);
+  const changeTaskStatus = (task: TasksProps, id: string, isDone: boolean) => {
+    const updatedTask = { ...task, isDone: isDone };
+    console.log(updatedTask);
+    setTasks(tasks.map((t) => (t.id === id ? updatedTask : t)));
   };
 
   if (filterValue === "active") {
