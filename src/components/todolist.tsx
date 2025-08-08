@@ -10,6 +10,7 @@ type TaskListProps = {
   addTask: (value: string) => void;
   removeTask: (id: string) => void;
   filterTasks: (value: filterValueType) => void;
+  changeTaskStatus: (id: string) => void;
 };
 
 export function TodoList({
@@ -18,6 +19,7 @@ export function TodoList({
   addTask,
   removeTask,
   filterTasks,
+  changeTaskStatus,
 }: TaskListProps) {
   let [newTaskTitle, setNewTaskTitle] = useState("");
 
@@ -52,7 +54,12 @@ export function TodoList({
 
             return (
               <li className="todo_li" key={task.id}>
-                <input type="checkbox" checked={task.isDone}></input>
+                <input
+                  type="checkbox"
+                  checked={task.isDone}
+                  onChange={() => {
+                    changeTaskStatus(task.id);
+                  }}></input>
                 <span>{task.title}</span>
                 <button onClick={removeTaskHandler}>x</button>
               </li>
