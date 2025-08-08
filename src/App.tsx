@@ -2,6 +2,7 @@ import { v1 } from "uuid";
 import "./App.css";
 import { TodoList } from "./components/todolist";
 import { useState } from "react";
+import type { TasksProps } from "./components/todolist";
 
 export type filterValueType = "all" | "active" | "completed";
 
@@ -13,6 +14,8 @@ function App() {
   ]);
 
   console.log(tasks);
+
+  //REFACTOR: починить фильтрацию массива (баг с добавлением элементов из состояния);
 
   const [filterValue, setFilterValue] = useState<filterValueType>("all");
   let filteredTasks = tasks;
@@ -28,9 +31,13 @@ function App() {
     setTasks(tasks.filter((t) => t.id !== id));
   };
 
-  const changeStatus = (id: string) => {
-    const task = tasks.find((t) => t.id === id);
-    console.log(task);
+  const changeTaskStatus = (
+    task: TasksProps,
+    index: number,
+    isDone: boolean
+  ) => {
+    task.isDone = !isDone;
+    setTasks([...tasks.slice(0, index), task, ...tasks.slice(index + 1)]);
   };
 
   if (filterValue === "active") {
@@ -50,7 +57,7 @@ function App() {
           addTask={addTask}
           removeTask={removeTask}
           filterTasks={filterTasks}
-          changeTaskStatus={changeStatus}
+          changeTaskStatus={changeTaskStatus}
         />
       </div>
     </div>

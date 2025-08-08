@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { filterValueType } from "../App";
 import type { ChangeEvent } from "react";
 
-type TasksProps = { id: string; title: string; isDone: boolean };
+export type TasksProps = { id: string; title: string; isDone: boolean };
 
 type TaskListProps = {
   title: string;
@@ -10,7 +10,7 @@ type TaskListProps = {
   addTask: (value: string) => void;
   removeTask: (id: string) => void;
   filterTasks: (value: filterValueType) => void;
-  changeTaskStatus: (id: string) => void;
+  changeTaskStatus: (task: TasksProps, index: number, isDone: boolean) => void;
 };
 
 export function TodoList({
@@ -52,14 +52,15 @@ export function TodoList({
           {tasksArr.map((task) => {
             const removeTaskHandler = () => removeTask(task.id);
 
+            const changeTaskStatusHandler = () =>
+              changeTaskStatus(task, tasksArr.indexOf(task), task.isDone);
+
             return (
               <li className="todo_li" key={task.id}>
                 <input
                   type="checkbox"
                   checked={task.isDone}
-                  onChange={() => {
-                    changeTaskStatus(task.id);
-                  }}></input>
+                  onChange={changeTaskStatusHandler}></input>
                 <span>{task.title}</span>
                 <button onClick={removeTaskHandler}>x</button>
               </li>
