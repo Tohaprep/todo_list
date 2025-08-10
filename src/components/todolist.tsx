@@ -8,6 +8,7 @@ export type TasksProps = { id: string; title: string; isDone: boolean };
 type TaskListProps = {
   title: string;
   tasksArr: Array<TasksProps>;
+  filterValue: filterValueType;
   addTask: (value: string) => void;
   removeTask: (id: string) => void;
   filterTasks: (value: filterValueType) => void;
@@ -17,25 +18,28 @@ type TaskListProps = {
 export function TodoList({
   title,
   tasksArr,
+  filterValue,
   addTask,
   removeTask,
   filterTasks,
   changeTaskStatus,
 }: TaskListProps) {
   let [newTaskTitle, setNewTaskTitle] = useState("");
+  let [error, setError] = useState<string | null>(null);
 
-  const addTitleTaskHandler = (e: ChangeEvent<HTMLInputElement>) =>
+  const addTitleTaskHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setError("");
     setNewTaskTitle(e.target.value);
+  };
 
   const addTaskHandler = () => {
-    newTaskTitle == "" ? null : addTask(newTaskTitle);
+    newTaskTitle == "" ? setError("поле обязательно") : addTask(newTaskTitle);
     setNewTaskTitle("");
   };
 
   const inputEnterKeyDownTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.code == "Enter" && e.ctrlKey == true) {
-      newTaskTitle == "" ? null : addTask(newTaskTitle);
-      setNewTaskTitle("");
+      addTaskHandler();
     }
   };
 
@@ -48,7 +52,7 @@ export function TodoList({
       <h2 className="todo_header">{title}</h2>
       <div className="todo_input">
         <input
-          className="todo_textarea"
+          className={error ? "todo_textarea-error" : "todo_textarea"}
           type="text"
           value={newTaskTitle}
           onChange={addTitleTaskHandler}
@@ -56,6 +60,7 @@ export function TodoList({
         />
         <button onClick={addTaskHandler}>+</button>
       </div>
+      {error && <p className="error_message">{error}</p>}
       <div className="todo_ul">
         <ul>
           {tasksArr.map((task) => {
@@ -65,7 +70,9 @@ export function TodoList({
               changeTaskStatus(task, task.id, !task.isDone);
 
             return (
-              <li className="todo_li" key={task.id}>
+              <li
+                className={task.isDone === true ? "todo_li is_done" : "todo_li"}
+                key={task.id}>
                 <input
                   type="checkbox"
                   checked={task.isDone}
@@ -78,9 +85,21 @@ export function TodoList({
         </ul>
       </div>
       <div className="todo_buttons">
-        <button onClick={allFilterTaskHandler}>все</button>
-        <button onClick={activeFilterTaskHandler}>активные</button>
-        <button onClick={completedFilterTaskHandler}>выполненные</button>
+        <button
+          className={filterValue == "all" ? "todo_button-active" : ""}
+          onClick={allFilterTaskHandler}>
+          все
+        </button>
+        <button
+          className={filterValue == "active" ? "todo_button-active" : ""}
+          onClick={activeFilterTaskHandler}>
+          активные
+        </button>
+        <button
+          className={filterValue == "completed" ? "todo_button-active" : ""}
+          onClick={completedFilterTaskHandler}>
+          выполненные
+        </button>
       </div>
     </div>
   );

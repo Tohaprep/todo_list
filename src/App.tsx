@@ -13,8 +13,6 @@ function App() {
     { id: v1(), title: "прес", isDone: true },
   ]);
 
-  console.log(tasks);
-
   const [filterValue, setFilterValue] = useState<filterValueType>("all");
   let filteredTasks = tasks;
 
@@ -49,6 +47,7 @@ function App() {
         <TodoList
           title="что сделать"
           tasksArr={filteredTasks}
+          filterValue={filterValue}
           addTask={addTask}
           removeTask={removeTask}
           filterTasks={filterTasks}
