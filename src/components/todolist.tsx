@@ -2,20 +2,26 @@ import { useState } from "react";
 import type { filterValueType } from "../App";
 import type { ChangeEvent } from "react";
 import type { KeyboardEvent } from "react";
-
-export type TasksProps = { id: string; title: string; isDone: boolean };
+import type { TaskType } from "../App";
 
 type TaskListProps = {
+  todoListId: string;
   title: string;
-  tasksArr: Array<TasksProps>;
+  tasksArr: Array<TaskType>;
   filterValue: filterValueType;
-  addTask: (value: string) => void;
-  removeTask: (id: string) => void;
-  filterTasks: (value: filterValueType) => void;
-  changeTaskStatus: (task: TasksProps, id: string, isDone: boolean) => void;
+  addTask: (todoListId: string, value: string) => void;
+  removeTask: (todoListId: string, id: string) => void;
+  filterTasks: (todoListId: string, value: filterValueType) => void;
+  changeTaskStatus: (
+    todoListId: string,
+
+    id: string,
+    isDone: boolean
+  ) => void;
 };
 
 export function TodoList({
+  todoListId,
   title,
   tasksArr,
   filterValue,
@@ -33,7 +39,9 @@ export function TodoList({
   };
 
   const addTaskHandler = () => {
-    newTaskTitle == "" ? setError("поле обязательно") : addTask(newTaskTitle);
+    newTaskTitle == ""
+      ? setError("поле обязательно")
+      : addTask(todoListId, newTaskTitle);
     setNewTaskTitle("");
   };
 
@@ -43,9 +51,9 @@ export function TodoList({
     }
   };
 
-  const allFilterTaskHandler = () => filterTasks("all");
-  const activeFilterTaskHandler = () => filterTasks("active");
-  const completedFilterTaskHandler = () => filterTasks("completed");
+  const allFilterTaskHandler = () => filterTasks(todoListId, "all");
+  const activeFilterTaskHandler = () => filterTasks(todoListId, "active");
+  const completedFilterTaskHandler = () => filterTasks(todoListId, "completed");
 
   return (
     <div className="todo">
@@ -64,10 +72,10 @@ export function TodoList({
       <div className="todo_ul">
         <ul>
           {tasksArr.map((task) => {
-            const removeTaskHandler = () => removeTask(task.id);
+            const removeTaskHandler = () => removeTask(todoListId, task.id);
 
             const changeTaskStatusHandler = () =>
-              changeTaskStatus(task, task.id, !task.isDone);
+              changeTaskStatus(todoListId, task.id, !task.isDone);
 
             return (
               <li
