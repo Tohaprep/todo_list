@@ -12,12 +12,8 @@ type TaskListProps = {
   addTask: (todoListId: string, value: string) => void;
   removeTask: (todoListId: string, id: string) => void;
   filterTasks: (todoListId: string, value: filterValueType) => void;
-  changeTaskStatus: (
-    todoListId: string,
-
-    id: string,
-    isDone: boolean
-  ) => void;
+  changeTaskStatus: (todoListId: string, id: string, isDone: boolean) => void;
+  removeTodoList: (todoListId: string) => void;
 };
 
 export function TodoList({
@@ -29,6 +25,7 @@ export function TodoList({
   removeTask,
   filterTasks,
   changeTaskStatus,
+  removeTodoList,
 }: TaskListProps) {
   let [newTaskTitle, setNewTaskTitle] = useState("");
   let [error, setError] = useState<string | null>(null);
@@ -57,7 +54,15 @@ export function TodoList({
 
   return (
     <div className="todo">
-      <h2 className="todo_header">{title}</h2>
+      <span>
+        <h2 className="todo_header">{title}</h2>
+        <button
+          onClick={() => {
+            removeTodoList(todoListId);
+          }}>
+          х
+        </button>
+      </span>
       <div className="todo_input">
         <input
           className={error ? "todo_textarea-error" : "todo_textarea"}

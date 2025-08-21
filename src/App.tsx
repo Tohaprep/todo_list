@@ -32,9 +32,39 @@ function App() {
   ]);
 
   const [tasks, setTasks] = useState<TasksType>({
-    [todoLists[0].id]: [{ id: v1(), title: "TypeScript", isDone: false }],
-    [todoLists[1].id]: [{ id: v1(), title: "футболка", isDone: false }],
+    ...(todoLists[0] && {
+      [todoLists[0].id]: [{ id: v1(), title: "TypeScript", isDone: false }],
+    }),
+    ...(todoLists[1] && {
+      [todoLists[1].id]: [{ id: v1(), title: "футболка", isDone: false }],
+    }),
   });
+
+  const addTodoList = () => {
+    const newTodoList: todoListsType = {
+      id: v1(),
+      title: "что купить",
+      filterValue: "all",
+    };
+    setTodoLists([...todoLists, newTodoList]);
+    setTasks({
+      ...tasks,
+      [newTodoList.id]: [{ id: v1(), title: "новое задание", isDone: false }],
+    });
+  };
+
+  const removeTodoList = (todoListId: string) => {
+    setTodoLists(
+      todoLists.filter((todolist) => {
+        return todolist.id !== todoListId;
+      })
+    );
+    setTasks((prevTasks) => {
+      const updatedTasks = { ...prevTasks };
+      delete updatedTasks[todoListId];
+      return updatedTasks;
+    });
+  };
 
   const filterTasks = (todoListId: string, value: filterValueType) => {
     const newTodoLists = todoLists.map((todoList) => {
@@ -80,15 +110,21 @@ function App() {
   return (
     <div className="App">
       <div className="todos">
+        <button
+          onClick={() => {
+            addTodoList();
+          }}>
+          добавить
+        </button>
         {todoLists.map((todoList) => {
           let filteredTasks = tasks[todoList.id];
 
           if (todoList.filterValue === "active") {
-            filteredTasks = tasks[todoList.id].filter((t) => t.isDone == false);
+            filteredTasks = filteredTasks.filter((t) => t.isDone == false);
           }
 
           if (todoList.filterValue === "completed") {
-            filteredTasks = tasks[todoList.id].filter((t) => t.isDone == true);
+            filteredTasks = filteredTasks.filter((t) => t.isDone == true);
           }
 
           return (
@@ -102,6 +138,7 @@ function App() {
               removeTask={removeTask}
               filterTasks={filterTasks}
               changeTaskStatus={changeTaskStatus}
+              removeTodoList={removeTodoList}
             />
           );
         })}
