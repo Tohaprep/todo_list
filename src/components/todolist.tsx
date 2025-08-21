@@ -54,15 +54,16 @@ export function TodoList({
 
   return (
     <div className="todo">
-      <span>
-        <h2 className="todo_header">{title}</h2>
+      <h2 className="todo_header">
+        {title}
         <button
           onClick={() => {
             removeTodoList(todoListId);
           }}>
           х
         </button>
-      </span>
+      </h2>
+
       <div className="todo_input">
         <input
           className={error ? "todo_textarea-error" : "todo_textarea"}

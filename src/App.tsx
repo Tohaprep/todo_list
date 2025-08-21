@@ -2,6 +2,7 @@ import { v1 } from "uuid";
 import "./App.css";
 import { TodoList } from "./components/todolist";
 import { useState } from "react";
+import Modal from "./components/modal";
 
 export type filterValueType = "all" | "active" | "completed";
 
@@ -40,31 +41,7 @@ function App() {
     }),
   });
 
-  const addTodoList = () => {
-    const newTodoList: todoListsType = {
-      id: v1(),
-      title: "что купить",
-      filterValue: "all",
-    };
-    setTodoLists([...todoLists, newTodoList]);
-    setTasks({
-      ...tasks,
-      [newTodoList.id]: [{ id: v1(), title: "новое задание", isDone: false }],
-    });
-  };
-
-  const removeTodoList = (todoListId: string) => {
-    setTodoLists(
-      todoLists.filter((todolist) => {
-        return todolist.id !== todoListId;
-      })
-    );
-    setTasks((prevTasks) => {
-      const updatedTasks = { ...prevTasks };
-      delete updatedTasks[todoListId];
-      return updatedTasks;
-    });
-  };
+  const [listIsAdding, setListIsAdding] = useState<boolean>(false);
 
   const filterTasks = (todoListId: string, value: filterValueType) => {
     const newTodoLists = todoLists.map((todoList) => {
@@ -107,15 +84,49 @@ function App() {
     }));
   };
 
+  const addTodoList = (value: string) => {
+    const newTodoList: todoListsType = {
+      id: v1(),
+      title: value,
+      filterValue: "all",
+    };
+    setTodoLists([...todoLists, newTodoList]);
+    setTasks({
+      ...tasks,
+      [newTodoList.id]: [{ id: v1(), title: "новое задание", isDone: false }],
+    });
+    setListIsAdding(false);
+  };
+
+  const removeTodoList = (todoListId: string) => {
+    setTodoLists(
+      todoLists.filter((todolist) => {
+        return todolist.id !== todoListId;
+      })
+    );
+    setTasks((prevTasks) => {
+      const updatedTasks = { ...prevTasks };
+      delete updatedTasks[todoListId];
+      return updatedTasks;
+    });
+  };
+
+  const closeModal = (value: boolean) => {
+    setListIsAdding(value);
+  };
+
   return (
     <div className="App">
+      {listIsAdding && (
+        <Modal addTodoList={addTodoList} closeModal={closeModal} />
+      )}
+      <button
+        onClick={() => {
+          setListIsAdding(true);
+        }}>
+        добавить список
+      </button>
       <div className="todos">
-        <button
-          onClick={() => {
-            addTodoList();
-          }}>
-          добавить
-        </button>
         {todoLists.map((todoList) => {
           let filteredTasks = tasks[todoList.id];
 
