@@ -2,7 +2,7 @@ import { v1 } from "uuid";
 import "./App.css";
 import { TodoList } from "./components/todolist";
 import { useState } from "react";
-import Modal from "./components/modal";
+import Modal from "./components/Modal";
 
 export type filterValueType = "all" | "active" | "completed";
 
@@ -19,7 +19,7 @@ type TasksType = {
 };
 
 function App() {
-  let [todoLists, setTodoLists] = useState<Array<todoListsType>>([
+  const [todoLists, setTodoLists] = useState<Array<todoListsType>>([
     {
       id: v1(),
       title: "что выучить",

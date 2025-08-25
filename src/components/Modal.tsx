@@ -19,7 +19,7 @@ export default function Modal({ addTodoList, closeModal }: ModalTypes) {
   const modalInputValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setModalInputValue(e.target.value.trim());
   };
-
+  //REFACTOR: поколдовать с инпутом отдельно для модалки
   return (
     <div className="modal_overlay">
       <form action="submit" className="modal_form">

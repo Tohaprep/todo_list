@@ -1,8 +1,6 @@
-import { useState } from "react";
 import type { filterValueType } from "../App";
-import type { ChangeEvent } from "react";
-import type { KeyboardEvent } from "react";
 import type { TaskType } from "../App";
+import Input from "./Input";
 
 type TaskListProps = {
   todoListId: string;
@@ -27,27 +25,6 @@ export function TodoList({
   changeTaskStatus,
   removeTodoList,
 }: TaskListProps) {
-  let [newTaskTitle, setNewTaskTitle] = useState("");
-  let [error, setError] = useState<string | null>(null);
-
-  const addTitleTaskHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setError("");
-    setNewTaskTitle(e.target.value);
-  };
-
-  const addTaskHandler = () => {
-    newTaskTitle == ""
-      ? setError("поле обязательно")
-      : addTask(todoListId, newTaskTitle);
-    setNewTaskTitle("");
-  };
-
-  const inputEnterKeyDownTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.code == "Enter" && e.ctrlKey == true) {
-      addTaskHandler();
-    }
-  };
-
   const allFilterTaskHandler = () => filterTasks(todoListId, "all");
   const activeFilterTaskHandler = () => filterTasks(todoListId, "active");
   const completedFilterTaskHandler = () => filterTasks(todoListId, "completed");
@@ -64,17 +41,8 @@ export function TodoList({
         </button>
       </h2>
 
-      <div className="todo_input">
-        <input
-          className={error ? "todo_textarea-error" : "todo_textarea"}
-          type="text"
-          value={newTaskTitle}
-          onChange={addTitleTaskHandler}
-          onKeyDown={inputEnterKeyDownTaskHandler}
-        />
-        <button onClick={addTaskHandler}>+</button>
-      </div>
-      {error && <p className="error_message">{error}</p>}
+      <Input addTask={addTask} todoListId={todoListId} />
+
       <div className="todo_ul">
         <ul>
           {tasksArr.map((task) => {
