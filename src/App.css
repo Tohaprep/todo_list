@@ -26,14 +26,14 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1rem;
   background-color: rgb(180, 180, 180);
   border-radius: 12px;
 }
 
 .modal_buttons {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 8px;
 }
 

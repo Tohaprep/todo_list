@@ -62,6 +62,17 @@ function App() {
     }));
   };
 
+  const changeTaskTitle = (todoListId: string, id: string, value: string) => {
+    setTasks((prevTasks) => ({
+      ...prevTasks,
+      [todoListId]: [
+        ...prevTasks[todoListId].map((task) => {
+          return task.id === id ? { ...task, title: value } : task;
+        }),
+      ],
+    }));
+  };
+
   const removeTask = (todoListId: string, id: string) => {
     setTasks((prevTasks) => ({
       ...prevTasks,
@@ -96,6 +107,18 @@ function App() {
       [newTodoList.id]: [{ id: v1(), title: "новое задание", isDone: false }],
     });
     setListIsAdding(false);
+  };
+
+  const changeTodoListTitle = (TodoListId: string, value: string) => {
+    setTodoLists((prevTodoLists) => {
+      return [
+        ...prevTodoLists.map((todoList) => {
+          return todoList.id === TodoListId
+            ? { ...todoList, title: value }
+            : todoList;
+        }),
+      ];
+    });
   };
 
   const removeTodoList = (todoListId: string) => {
@@ -146,9 +169,11 @@ function App() {
               tasksArr={filteredTasks}
               filterValue={todoList.filterValue}
               addTask={addTask}
+              changeTaskTitle={changeTaskTitle}
               removeTask={removeTask}
               filterTasks={filterTasks}
               changeTaskStatus={changeTaskStatus}
+              changeTodoListTitle={changeTodoListTitle}
               removeTodoList={removeTodoList}
             />
           );

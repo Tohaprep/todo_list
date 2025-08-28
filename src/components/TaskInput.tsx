@@ -7,7 +7,7 @@ interface InputPropsType {
   children?: React.ReactNode;
 }
 
-export default function Input({
+export default function TaskInput({
   children,
   addTask,
   todoListId,
@@ -34,23 +34,28 @@ export default function Input({
       addTaskHandler();
     }
   };
+  const hideErrorHandler = () => {
+    setError("");
+  };
 
   return (
     <div>
       <div className="todo_input">
-        <input
-          className={error === "" ? "todo_textarea" : "todo_textarea-error"}
-          type="text"
-          value={inputValue}
-          onChange={setInputValueHandler}
-          onKeyDown={inputEnterKeyDownTaskHandler}
-        />
-        <div>
-          <button onClick={addTaskHandler}>добавить</button>
-          {children}
+        <div className="modal_input">
+          <input
+            className={error === "" ? "todo_textarea" : "todo_textarea-error"}
+            type="text"
+            value={inputValue}
+            onChange={setInputValueHandler}
+            onKeyDown={inputEnterKeyDownTaskHandler}
+          />
+          {error && <p className="error_message">{error}</p>}
         </div>
+        <button onClick={addTaskHandler} onBlur={hideErrorHandler}>
+          +
+        </button>
+        {children}
       </div>
-      {error && <p className="error_message">{error}</p>}
     </div>
   );
 }

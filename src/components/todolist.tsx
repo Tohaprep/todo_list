@@ -1,6 +1,7 @@
 import type { filterValueType } from "../App";
 import type { TaskType } from "../App";
-import Input from "./Input";
+import TaskInput from "./TaskInput";
+import EditableSpan from "./EditableSpan";
 
 type TaskListProps = {
   todoListId: string;
@@ -8,9 +9,11 @@ type TaskListProps = {
   tasksArr: Array<TaskType>;
   filterValue: filterValueType;
   addTask: (todoListId: string, value: string) => void;
+  changeTaskTitle: (todoListId: string, id: string, value: string) => void;
   removeTask: (todoListId: string, id: string) => void;
   filterTasks: (todoListId: string, value: filterValueType) => void;
   changeTaskStatus: (todoListId: string, id: string, isDone: boolean) => void;
+  changeTodoListTitle: (todoListId: string, value: string) => void;
   removeTodoList: (todoListId: string) => void;
 };
 
@@ -20,19 +23,25 @@ export function TodoList({
   tasksArr,
   filterValue,
   addTask,
+  changeTaskTitle,
   removeTask,
   filterTasks,
   changeTaskStatus,
+  changeTodoListTitle,
   removeTodoList,
 }: TaskListProps) {
   const allFilterTaskHandler = () => filterTasks(todoListId, "all");
   const activeFilterTaskHandler = () => filterTasks(todoListId, "active");
   const completedFilterTaskHandler = () => filterTasks(todoListId, "completed");
+  const editTodoListTitleHandler = (value: string) => {
+    changeTodoListTitle(todoListId, value);
+  };
 
   return (
     <div className="todo">
       <h2 className="todo_header">
-        {title}
+        {/* {title} */}
+        <EditableSpan title={title} onSubmit={editTodoListTitleHandler} />
         <button
           onClick={() => {
             removeTodoList(todoListId);
@@ -41,7 +50,7 @@ export function TodoList({
         </button>
       </h2>
 
-      <Input addTask={addTask} todoListId={todoListId} />
+      <TaskInput addTask={addTask} todoListId={todoListId} />
 
       <div className="todo_ul">
         <ul>
@@ -51,6 +60,10 @@ export function TodoList({
             const changeTaskStatusHandler = () =>
               changeTaskStatus(todoListId, task.id, !task.isDone);
 
+            const editTaskTitleHandler = (value: string) => {
+              changeTaskTitle(todoListId, task.id, value);
+            };
+
             return (
               <li
                 className={task.isDone === true ? "todo_li is_done" : "todo_li"}
@@ -59,7 +72,10 @@ export function TodoList({
                   type="checkbox"
                   checked={task.isDone}
                   onChange={changeTaskStatusHandler}></input>
-                <span>{task.title}</span>
+                <EditableSpan
+                  title={task.title}
+                  onSubmit={editTaskTitleHandler}
+                />
                 <button onClick={removeTaskHandler}>x</button>
               </li>
             );
