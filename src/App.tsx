@@ -3,6 +3,8 @@ import "./App.css";
 import { TodoList } from "./components/todolist";
 import { useState } from "react";
 import Modal from "./components/Modal";
+import { Button } from "@mui/material";
+import DenseAppBar from "./components/DenseAppBar";
 
 export type filterValueType = "all" | "active" | "completed";
 
@@ -140,15 +142,19 @@ function App() {
 
   return (
     <div className="App">
+      <DenseAppBar>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setListIsAdding(true);
+          }}>
+          добавить
+        </Button>
+      </DenseAppBar>
       {listIsAdding && (
         <Modal addTodoList={addTodoList} closeModal={closeModal} />
       )}
-      <button
-        onClick={() => {
-          setListIsAdding(true);
-        }}>
-        добавить список
-      </button>
+
       <div className="todos">
         {todoLists.map((todoList) => {
           let filteredTasks = tasks[todoList.id];

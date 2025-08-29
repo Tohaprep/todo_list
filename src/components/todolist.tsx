@@ -2,6 +2,10 @@ import type { filterValueType } from "../App";
 import type { TaskType } from "../App";
 import TaskInput from "./TaskInput";
 import EditableSpan from "./EditableSpan";
+import { Button } from "@mui/material";
+import { DeleteRounded } from "@mui/icons-material";
+import { Paper } from "@mui/material";
+import { lightBlue } from "@mui/material/colors";
 
 type TaskListProps = {
   todoListId: string;
@@ -36,24 +40,24 @@ export function TodoList({
   const editTodoListTitleHandler = (value: string) => {
     changeTodoListTitle(todoListId, value);
   };
+  const removeTodoListHandler = () => {
+    removeTodoList(todoListId);
+  };
 
   return (
-    <div className="todo">
-      <h2 className="todo_header">
-        {/* {title} */}
+    <Paper className="todolist" elevation={3}>
+      <h2 className="todolist_header">
         <EditableSpan title={title} onSubmit={editTodoListTitleHandler} />
-        <button
-          onClick={() => {
-            removeTodoList(todoListId);
-          }}>
-          х
-        </button>
+
+        <Button color="error" onClick={removeTodoListHandler}>
+          <DeleteRounded></DeleteRounded>
+        </Button>
       </h2>
 
       <TaskInput addTask={addTask} todoListId={todoListId} />
 
-      <div className="todo_ul">
-        <ul>
+      <div>
+        <ul className="todo_ul">
           {tasksArr.map((task) => {
             const removeTaskHandler = () => removeTask(todoListId, task.id);
 
@@ -99,6 +103,6 @@ export function TodoList({
           выполненные
         </button>
       </div>
-    </div>
+    </Paper>
   );
 }

@@ -1,4 +1,6 @@
 import { useState, type ChangeEvent } from "react";
+import Button from "@mui/material/Button";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 
 interface InputPropsType {
   addTask: (todoListId: string, value: string) => void;
@@ -51,9 +53,9 @@ export default function TaskInput({
           />
           {error && <p className="error_message">{error}</p>}
         </div>
-        <button onClick={addTaskHandler} onBlur={hideErrorHandler}>
-          +
-        </button>
+        <Button onClick={addTaskHandler} onBlur={hideErrorHandler}>
+          <CheckRoundedIcon></CheckRoundedIcon>
+        </Button>
         {children}
       </div>
     </div>

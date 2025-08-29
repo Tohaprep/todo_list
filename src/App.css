@@ -1,12 +1,28 @@
 .App {
   margin: 0 auto;
-  padding: 50px;
   width: 1920px;
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+.header {
+  width: 100%;
+  background-color: #fff; /* пример фона */
+}
+
+.header_container {
+  margin: 0 auto;
+
+  width: 100%;
+  padding: 0 20px; /* отступы по бокам */
+}
+
+.header_toolbar {
+  display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 80px; /* высота хедера */
 }
 
 .modal_overlay {
@@ -38,26 +54,40 @@
 }
 
 .todos {
-  gap: 5vw;
+  padding: 4rem;
+  gap: 3vw 6vw;
   display: flex;
   flex-direction: row;
+  justify-content: start;
   flex-wrap: wrap;
 }
 
-.todo {
-  gap: 12px;
+.todolist {
   width: 350px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.todolist_header {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.editableSpan_title {
+  display: block;
+}
+.editableSpan_input {
+  display: inline-block;
 }
 
 .todo_input {
-  width: inherit;
   display: flex;
-  gap: 8px;
   justify-content: space-between;
   align-items: center;
 }
@@ -67,9 +97,9 @@
   outline: none;
 }
 
-/* .todo_textarea:focus-visible {
+.todo_textarea:focus-visible {
   outline: none;
-} */
+}
 
 .todo_textarea-error {
   width: inherit;
@@ -85,17 +115,12 @@
 }
 
 .todo_ul {
-  width: inherit;
-  list-style-type: none;
   display: flex;
   flex-direction: column;
-}
-
-.todo_ul > ul {
-  display: flex;
-  flex-direction: column;
+  width: 350px;
   gap: 4px;
-  min-height: 250px;
+  height: 200px;
+  overflow-y: auto;
 }
 
 .todo_li {
@@ -109,9 +134,10 @@
 }
 
 .todo_buttons {
+  width: inherit;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .todo_button-active {

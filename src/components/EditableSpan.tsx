@@ -26,9 +26,10 @@ export default function EditableSpan({ title, onSubmit }: EditableSpanProps) {
   };
 
   return (
-    <div>
+    <div className="editableSpan">
       {editMode ? (
         <input
+          className="editableSpan_input"
           type="text"
           value={spanValue}
           onChange={setSpanValueHandler}
@@ -36,7 +37,11 @@ export default function EditableSpan({ title, onSubmit }: EditableSpanProps) {
           autoFocus
         />
       ) : (
-        <span onDoubleClick={activateEditModeHandler}>{spanValue}</span>
+        <span
+          className="editableSpan_title"
+          onDoubleClick={activateEditModeHandler}>
+          {spanValue}
+        </span>
       )}
     </div>
   );
