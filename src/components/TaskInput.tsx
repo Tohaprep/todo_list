@@ -45,6 +45,7 @@ export default function TaskInput({
       <div className="todo_input">
         <div className="modal_input">
           <input
+            placeholder="название задачи"
             className={error === "" ? "todo_textarea" : "todo_textarea-error"}
             type="text"
             value={inputValue}

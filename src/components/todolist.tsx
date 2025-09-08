@@ -2,10 +2,12 @@ import type { filterValueType } from "../App";
 import type { TaskType } from "../App";
 import TaskInput from "./TaskInput";
 import EditableSpan from "./EditableSpan";
-import { Button } from "@mui/material";
+import { Button, dividerClasses } from "@mui/material";
 import { DeleteRounded } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
+import { DeleteForever } from "@mui/icons-material";
+import { useState } from "react";
 
 type TaskListProps = {
   todoListId: string;
@@ -44,12 +46,17 @@ export function TodoList({
     removeTodoList(todoListId);
   };
 
+  console.log(tasksArr);
+
   return (
-    <Paper className="todolist" elevation={3}>
+    <Paper className="todolist" elevation={5}>
       <h2 className="todolist_header">
         <EditableSpan title={title} onSubmit={editTodoListTitleHandler} />
 
-        <Button color="error" onClick={removeTodoListHandler}>
+        <Button
+          className="todolist_delete"
+          color="error"
+          onClick={removeTodoListHandler}>
           <DeleteRounded></DeleteRounded>
         </Button>
       </h2>
@@ -80,28 +87,33 @@ export function TodoList({
                   title={task.title}
                   onSubmit={editTaskTitleHandler}
                 />
-                <button onClick={removeTaskHandler}>x</button>
+                <label className="todo_deleteLabel" onClick={removeTaskHandler}>
+                  <DeleteForever></DeleteForever>
+                </label>
               </li>
             );
           })}
         </ul>
       </div>
       <div className="todo_buttons">
-        <button
+        <Button
+          variant={filterValue == "all" ? "contained" : "outlined"}
           className={filterValue == "all" ? "todo_button-active" : ""}
           onClick={allFilterTaskHandler}>
           все
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={filterValue == "active" ? "contained" : "outlined"}
           className={filterValue == "active" ? "todo_button-active" : ""}
           onClick={activeFilterTaskHandler}>
           активные
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={filterValue == "completed" ? "contained" : "outlined"}
           className={filterValue == "completed" ? "todo_button-active" : ""}
           onClick={completedFilterTaskHandler}>
           выполненные
-        </button>
+        </Button>
       </div>
     </Paper>
   );

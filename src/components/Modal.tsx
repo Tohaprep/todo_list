@@ -1,3 +1,5 @@
+import { Paper } from "@mui/material";
+import { Button } from "@mui/material";
 import TodoListInput from "./TodoListInput";
 
 interface ModalTypes {
@@ -12,7 +14,9 @@ export default function Modal({ addTodoList, closeModal }: ModalTypes) {
   return (
     <div className="modal_overlay">
       <TodoListInput addTodoList={addTodoList}>
-        <button onClick={closeModalHandler}>отменить</button>
+        <Button variant="outlined" onClick={closeModalHandler}>
+          отменить
+        </Button>
       </TodoListInput>
     </div>
   );

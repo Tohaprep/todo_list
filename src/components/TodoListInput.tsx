@@ -1,3 +1,4 @@
+import { Button, Paper } from "@mui/material";
 import { useState, type ChangeEvent } from "react";
 
 interface InputPropsType {
@@ -36,9 +37,10 @@ export default function TodoListInput({
 
   return (
     <div>
-      <div className="modal_form">
+      <Paper className="modal_form">
         <div className="modal_input">
           <input
+            placeholder="название списка"
             className={error === "" ? "todo_textarea" : "todo_textarea-error"}
             type="text"
             value={inputValue}
@@ -48,12 +50,15 @@ export default function TodoListInput({
           {error && <p className="error_message">{error}</p>}
         </div>
         <div className="modal_buttons">
-          <button onClick={addTodoListHandler} onBlur={hideErrorHandler}>
-            добавить
-          </button>
+          <Button
+            variant="contained"
+            onClick={addTodoListHandler}
+            onBlur={hideErrorHandler}>
+            добавить список
+          </Button>
           {children}
         </div>
-      </div>
+      </Paper>
     </div>
   );
 }
