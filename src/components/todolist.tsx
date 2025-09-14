@@ -65,34 +65,42 @@ export function TodoList({
 
       <div>
         <ul className="todo_ul">
-          {tasksArr.map((task) => {
-            const removeTaskHandler = () => removeTask(todoListId, task.id);
+          {JSON.stringify(tasksArr) === "[]" ? (
+            <p className="todo_notification">тут пусто!</p>
+          ) : (
+            tasksArr.map((task) => {
+              const removeTaskHandler = () => removeTask(todoListId, task.id);
 
-            const changeTaskStatusHandler = () =>
-              changeTaskStatus(todoListId, task.id, !task.isDone);
+              const changeTaskStatusHandler = () =>
+                changeTaskStatus(todoListId, task.id, !task.isDone);
 
-            const editTaskTitleHandler = (value: string) => {
-              changeTaskTitle(todoListId, task.id, value);
-            };
+              const editTaskTitleHandler = (value: string) => {
+                changeTaskTitle(todoListId, task.id, value);
+              };
 
-            return (
-              <li
-                className={task.isDone === true ? "todo_li is_done" : "todo_li"}
-                key={task.id}>
-                <input
-                  type="checkbox"
-                  checked={task.isDone}
-                  onChange={changeTaskStatusHandler}></input>
-                <EditableSpan
-                  title={task.title}
-                  onSubmit={editTaskTitleHandler}
-                />
-                <label className="todo_deleteLabel" onClick={removeTaskHandler}>
-                  <DeleteForever></DeleteForever>
-                </label>
-              </li>
-            );
-          })}
+              return (
+                <li
+                  className={
+                    task.isDone === true ? "todo_li is_done" : "todo_li"
+                  }
+                  key={task.id}>
+                  <input
+                    type="checkbox"
+                    checked={task.isDone}
+                    onChange={changeTaskStatusHandler}></input>
+                  <EditableSpan
+                    title={task.title}
+                    onSubmit={editTaskTitleHandler}
+                  />
+                  <label
+                    className="todo_deleteLabel"
+                    onClick={removeTaskHandler}>
+                    <DeleteForever></DeleteForever>
+                  </label>
+                </li>
+              );
+            })
+          )}
         </ul>
       </div>
       <div className="todo_buttons">
