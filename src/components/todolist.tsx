@@ -46,8 +46,6 @@ export function TodoList({
     removeTodoList(todoListId);
   };
 
-  console.log(tasksArr);
-
   return (
     <Paper className="todolist" elevation={5}>
       <h2 className="todolist_header">

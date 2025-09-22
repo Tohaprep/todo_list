@@ -1,12 +1,13 @@
-import type { todoListsType } from "../App";
+import type { filterValueType, todoListsType } from "../App";
+
 import { v1 } from "uuid";
 
 type ActionType =
   | {
       type: "CREATE_TODOLIST";
-      value: string;
+      title: string;
     }
-  | { type: "CHANGE_TODOLIST_TITLE"; todolistId: string; value: string }
+  | { type: "CHANGE_TODOLIST_TITLE"; todolistId: string; title: string }
   | {
       type: "REMOVE_TODOLIST";
       todolistId: string;
@@ -32,6 +33,11 @@ type ActionType =
       todolistId: string;
       taskId: string;
       isDone: boolean;
+    }
+  | {
+      type: "FILTER_TASKS";
+      todolistId: string;
+      filterValue: filterValueType;
     };
 
 export const todolistReducer = (
@@ -42,7 +48,7 @@ export const todolistReducer = (
     case "CREATE_TODOLIST": {
       const newTodolist: todoListsType = {
         id: v1(),
-        title: action.value,
+        title: action.title,
         filterValue: "all",
         tasks: [],
       };
@@ -50,7 +56,7 @@ export const todolistReducer = (
     }
     case "CHANGE_TODOLIST_TITLE": {
       return state.map((list) =>
-        list.id === action.todolistId ? { ...list, title: "value" } : list
+        list.id === action.todolistId ? { ...list, title: action.title } : list
       );
     }
     case "REMOVE_TODOLIST": {
@@ -108,6 +114,13 @@ export const todolistReducer = (
             }
           : list;
       });
+    }
+    case "FILTER_TASKS": {
+      return state.map((list) =>
+        list.id === action.todolistId
+          ? { ...list, filterValue: action.filterValue }
+          : list
+      );
     }
 
     default:
