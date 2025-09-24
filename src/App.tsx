@@ -6,6 +6,7 @@ import Modal from "./components/Modal";
 import { Button } from "@mui/material";
 import DenseAppBar from "./components/DenseAppBar";
 import { todolistReducer } from "./state/todolists.reducer";
+import { useEffect } from "react";
 
 export type filterValueType = "all" | "active" | "completed";
 
@@ -34,7 +35,29 @@ function App() {
     },
   ];
 
-  const [state, dispatch] = useReducer(todolistReducer, initState);
+  const [state, dispatch] = useReducer(todolistReducer, initState, () => {
+    const savedState = JSON.parse(localStorage.getItem("state") || "null");
+    return savedState
+      ? savedState
+      : [
+          {
+            id: v1(),
+            title: "что выучить",
+            filterValue: "all",
+            tasks: [{ id: v1(), title: "TypeScript", isDone: false }],
+          },
+          {
+            id: v1(),
+            title: "что купить",
+            filterValue: "all",
+            tasks: [{ id: v1(), title: "футболка", isDone: false }],
+          },
+        ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("state", JSON.stringify(state));
+  }, [state]);
 
   const [listIsAdding, setListIsAdding] = useState<boolean>(false);
 
