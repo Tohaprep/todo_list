@@ -1,26 +1,21 @@
-import type { filterValueType } from "../App";
-import type { TaskType } from "../App";
+import type {
+  filterValueType,
+  TaskType,
+} from "../contexts/app_context/AppContextProvider";
 import TaskInput from "./TaskInput";
 import EditableSpan from "./EditableSpan";
-import { Button, dividerClasses } from "@mui/material";
+import { Button } from "@mui/material";
 import { DeleteRounded } from "@mui/icons-material";
 import { Paper } from "@mui/material";
-import { lightBlue } from "@mui/material/colors";
 import { DeleteForever } from "@mui/icons-material";
-import { useState } from "react";
+import { useContext } from "react";
+import { AppContext } from "../contexts/app_context/AppContext";
 
 type TaskListProps = {
   todoListId: string;
   title: string;
   tasksArr: Array<TaskType>;
   filterValue: filterValueType;
-  addTask: (todoListId: string, value: string) => void;
-  changeTaskTitle: (todoListId: string, id: string, value: string) => void;
-  removeTask: (todoListId: string, id: string) => void;
-  filterTasks: (todoListId: string, value: filterValueType) => void;
-  changeTaskStatus: (todoListId: string, id: string, isDone: boolean) => void;
-  changeTodoListTitle: (todoListId: string, value: string) => void;
-  removeTodoList: (todoListId: string) => void;
 };
 
 export function TodoList({
@@ -28,14 +23,21 @@ export function TodoList({
   title,
   tasksArr,
   filterValue,
-  addTask,
-  changeTaskTitle,
-  removeTask,
-  filterTasks,
-  changeTaskStatus,
-  changeTodoListTitle,
-  removeTodoList,
 }: TaskListProps) {
+  const context = useContext(AppContext);
+  if (!context) {
+    return <div>загружаем...</div>;
+  }
+
+  const {
+    filterTasks,
+    changeTodoListTitle,
+    removeTodoList,
+    removeTasks,
+    changeTaskStatus,
+    changeTaskTitle,
+  } = context;
+
   const allFilterTaskHandler = () => filterTasks(todoListId, "all");
   const activeFilterTaskHandler = () => filterTasks(todoListId, "active");
   const completedFilterTaskHandler = () => filterTasks(todoListId, "completed");
@@ -59,7 +61,7 @@ export function TodoList({
         </Button>
       </h2>
 
-      <TaskInput addTask={addTask} todoListId={todoListId} />
+      <TaskInput todoListId={todoListId} />
 
       <div>
         <ul className="todo_ul">
@@ -67,7 +69,7 @@ export function TodoList({
             <p className="todo_notification">тут пусто!</p>
           ) : (
             tasksArr.map((task) => {
-              const removeTaskHandler = () => removeTask(todoListId, task.id);
+              const removeTaskHandler = () => removeTasks(todoListId, task.id);
 
               const changeTaskStatusHandler = () =>
                 changeTaskStatus(todoListId, task.id, !task.isDone);

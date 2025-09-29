@@ -1,4 +1,7 @@
-import type { filterValueType, todoListsType } from "../App";
+import type {
+  filterValueType,
+  todoListsType,
+} from "../contexts/app_context/AppContextProvider";
 
 import { v1 } from "uuid";
 

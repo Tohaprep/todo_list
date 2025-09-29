@@ -1,8 +1,10 @@
 import { Button, Paper } from "@mui/material";
 import { useState, type ChangeEvent } from "react";
+import { TextField } from "@mui/material";
 
 interface InputPropsType {
   addTodoList: (value: string) => void;
+
   children: React.ReactNode;
 }
 
@@ -39,8 +41,10 @@ export default function TodoListInput({
     <div>
       <Paper className="modal_form">
         <div className="modal_input">
-          <input
-            placeholder="название списка"
+          <TextField
+            id="outlined-basic"
+            label="название списка"
+            variant="outlined"
             className={error === "" ? "todo_textarea" : "todo_textarea-error"}
             type="text"
             value={inputValue}

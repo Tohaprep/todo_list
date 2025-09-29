@@ -1,12 +1,15 @@
 import { Button } from "@mui/material";
 import TodoListInput from "./TodoListInput";
+import { useContext } from "react";
+import { AppContext } from "../contexts/app_context/AppContext";
 
-interface ModalTypes {
-  addTodoList: (value: string) => void;
-  closeModal: (value: boolean) => void;
-}
+export default function Modal() {
+  const context = useContext(AppContext);
+  if (!context) {
+    return <div>загружаем...</div>;
+  }
+  const { closeModal, addTodoList } = context;
 
-export default function Modal({ addTodoList, closeModal }: ModalTypes) {
   const closeModalHandler = () => {
     closeModal(false);
   };

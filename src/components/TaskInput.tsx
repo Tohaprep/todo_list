@@ -1,19 +1,21 @@
-import { useState, type ChangeEvent } from "react";
+import { useContext, useState, type ChangeEvent } from "react";
 import Button from "@mui/material/Button";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import { TextField } from "@mui/material";
+import { AppContext } from "../contexts/app_context/AppContext";
 
 interface InputPropsType {
-  addTask: (todoListId: string, value: string) => void;
-  addTodoList?: (value: string) => void;
   todoListId: string;
   children?: React.ReactNode;
 }
 
-export default function TaskInput({
-  children,
-  addTask,
-  todoListId,
-}: InputPropsType) {
+export default function TaskInput({ children, todoListId }: InputPropsType) {
+  const context = useContext(AppContext);
+  if (!context) {
+    return <div>загружаем...</div>;
+  }
+  const { addTask } = context;
+
   const [inputValue, setInputValue] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -44,8 +46,10 @@ export default function TaskInput({
     <div>
       <div className="todo_input">
         <div className="modal_input">
-          <input
-            placeholder="название задачи"
+          <TextField
+            id="outlined-basic"
+            label="Название задачи"
+            variant="outlined"
             className={error === "" ? "todo_textarea" : "todo_textarea-error"}
             type="text"
             value={inputValue}
